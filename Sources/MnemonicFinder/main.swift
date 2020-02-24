@@ -1,5 +1,7 @@
 import PhoneNumberMnemonics
 
+let words = wordList(fileName: "words.txt")
+
 print("Enter phone number:")
 if let phoneNumber = readLine() {
     print("All possible mnemonics:")
