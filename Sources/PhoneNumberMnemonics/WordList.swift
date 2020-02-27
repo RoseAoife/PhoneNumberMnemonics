@@ -8,17 +8,22 @@ import Foundation
 // words.txt. It's up to you how you do this. You may consider a struct.
 
 public struct wordList {
-	var text = String()
+	var words = [""]
 
 	public init(fileName url: String) {
 		let fileURL = URL(fileURLWithPath: url)
+		var text = String()
 
 		do { 
 			text = try String(contentsOf: fileURL, encoding: .utf8)
-			print(text)
+			self.words = text.components(separatedBy: "\n")
 		} 
 		catch { 
 			print("Error reading file") 
 		}
+	}
+
+	public func getWords() -> [String] {
+		return self.words
 	}
 }
