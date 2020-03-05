@@ -46,7 +46,27 @@ public func letters(for phoneNumber: String) -> [[String]] {
 // array with each choice in the next array, and so on to produce strings
 // For instance permuations(of: [["a", "b"], ["c"], ["d", "e"]]) will return
 // ["acd", "ace" "bcd", "bce"]
+// reduce, flatMap, and map
 public func permutations(of arrays: [[String]]) -> [String] {
+    let simpleArray = arrays.map{ $0.reduce ("", +) }
+    print(simpleArray)
+    let sizeArray = arrays.map{ $0.count }
+    print(sizeArray)
+    let simplerArray = arrays.flatMap{ $0 }
+    print(simplerArray)
+    print(simplerArray.reduce("", +))
+    print(arrays.count)
+    var baseString = ""
+    var testArray: [String] = []
+    let result: [String] = simpleArray.map{ 
+	baseString.append($0.first!)
+	var testArray: [String] = []
+	testArray.append(baseString)
+	print(testArray)
+	var anotherArray = testArray.reduce ("", +)
+        print(anotherArray)
+	return ""
+    }
     return [""]
 }
 
