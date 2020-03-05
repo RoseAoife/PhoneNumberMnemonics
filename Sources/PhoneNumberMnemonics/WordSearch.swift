@@ -48,33 +48,22 @@ public func letters(for phoneNumber: String) -> [[String]] {
 // ["acd", "ace" "bcd", "bce"]
 // reduce, flatMap, and map
 public func permutations(of arrays: [[String]]) -> [String] {
-    let simpleArray = arrays.map{ $0.reduce ("", +) }
-    print(simpleArray)
-    let sizeArray = arrays.map{ $0.count }
-    print(sizeArray)
-    let simplerArray = arrays.flatMap{ $0 }
-    print(simplerArray)
-    print(simplerArray.reduce("", +))
-    print(arrays.count)
-    var baseString = ""
-    var testArray: [String] = []
-    let result: [String] = simpleArray.map{ 
-	baseString.append($0.first!)
-	var testArray: [String] = []
-	testArray.append(baseString)
-	print(testArray)
-	var anotherArray = testArray.reduce ("", +)
-        print(anotherArray)
-	return ""
+    return arrays.reduce([""]) { (last: [String], next: [String]) -> [String] in
+	return next.flatMap { (nextLetter: String) -> [String] in
+            return last.map { (lastLetter: String) -> String in
+		return lastLetter + nextLetter
+            }
+	}
     }
-    return [""]
 }
 
 // Finds all of the possible strings of characters that a phone number
 // can potentially represent
 // Uses letters(for:) and permutations(of:) to do this
 public func possibles(for phoneNumber: String) -> [String] {
-    return [""]
+    let possibleLetters = letters(for: phoneNumber)
+    let possiblePermutations = permutations(of: possibleLetters)
+    return possiblePermutations
 }
 
 // Returns all of the words in a given *string* from the wordlist.txt file
