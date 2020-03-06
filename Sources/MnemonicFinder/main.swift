@@ -1,7 +1,6 @@
-import PhoneNumberMnemonics
+// Tynan Matthews & Steven Pershyn
 
-let words = wordList(fileName: "words.txt")
-print(words.getWords())
+import PhoneNumberMnemonics
 
 print("Enter phone number:")
 if let phoneNumber = readLine() {

@@ -1,5 +1,6 @@
 // WordSearch.swift
 // Created for Assignment 5 of CSI 380
+// Tynan Matthews & Steven Pershyn
 
 import Foundation
 
@@ -18,7 +19,7 @@ public func letters(for phoneNumber: String) -> [[String]] {
 	case "1":
 		return ["1"]  
 	case "2":
-		return ["A", "B", "C"] 
+		return ["A", "B", "C"]
 	case "3":
 		return ["D", "E", "F"] 
 	case "4":
@@ -26,7 +27,7 @@ public func letters(for phoneNumber: String) -> [[String]] {
 	case "5":
 		return ["J", "K", "L"] 
 	case "6":
-		return ["M", "N", "O"] 
+		return ["M", "N", "O"]
 	case "7":
 		return ["P", "Q", "R", "S"] 
 	case "8":
@@ -69,14 +70,23 @@ public func possibles(for phoneNumber: String) -> [String] {
 // Returns all of the words in a given *string* from the wordlist.txt file
 // using only words in the word list of minimum length ofMinLength
 public func wordsInString(_ string: String, ofMinLength length: UInt) -> [String] {
-    return [""]
+    let words = wordList(fileName: "words.txt").getWords()
+    let word_list = words.filter { (word: String) -> Bool in word.length >= length }
+    return word_list.filter { string.uppercased().contains($0.uppercased()) }.map { $0.uppercased() }
 }
 
 // Returns all possibles strings of characters that a phone number
 // can potentially represent that contain words in words.txt
 // greater than or equal to ofMinLength characters
 public func possiblesWithWholeWords(ofMinLength length: UInt, for phoneNumber: String) -> [String] {
-    return [""]
+    let words = wordList(fileName: "words.txt").getWords()
+    let posibilities = possibles(for: phoneNumber)
+    let valid_words = words.filter { $0.length >= length } 
+    let result = valid_words.map { (word: String) -> [String] in return posibilities.filter {$0.uppercased().contains(word.uppercased()) }}.filter { $0 != [] }[0].map { $0.uppercased() }
+    if result.count > 0 {
+	return result
+    } else {
+	return [""] }
 }
 
 // Returns the phone number mnemonics that have the most words present in words.txt
@@ -85,11 +95,24 @@ public func possiblesWithWholeWords(ofMinLength length: UInt, for phoneNumber: S
 // words.txt, it will return both of them, if the are no other mnemonics
 // that contain more than three words
 public func mostWords(for phoneNumber: String) -> [String] {
-    return [""]
+    var num = 0
+    var most = [""]
+    var result = [""]
+    let n = possibles(for: phoneNumber).map { wordsInString($0, ofMinLength: 0) }
+    n.map { if $0.count >= num { most = most.filter { Int($0) == num }; most.append(String(n.index(of: $0)!)); num = $0.count }}
+    most.map { result.append(possibles(for: phoneNumber)[Int($0)!]) }
+    result.removeFirst(1)
+    return result
 }
 
 // Returns the phone number mnemonics with the longest words from words.txt
 // If more than one word is tied for the longest, returns all of them
 public func longestWords(for phoneNumber: String) -> [String] {
-    return [""]
+    var most = 0
+    var big = [""]
+    let words = wordList(fileName: "words.txt").getWords()
+    let posibilities = possibles(for: phoneNumber)
+    let result = words.map { (word: String) -> [String] in return posibilities.filter {$0.uppercased().contains(word.uppercased()) }}.filter { $0 != [] }[0].map { $0.uppercased() }
+    let new_result = result.map { (word: String) -> [()] in return wordsInString(word, ofMinLength: 0).map { if $0.length > most { most = $0.length; big = [$0] } } }
+    return big
 }
